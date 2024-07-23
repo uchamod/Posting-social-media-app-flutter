@@ -7,7 +7,10 @@ class MobileScreenlayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text("this is mobile layout"),
+        child: Text(
+          "this is mobile layout",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }
