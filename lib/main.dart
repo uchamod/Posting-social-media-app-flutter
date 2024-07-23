@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/pages/login_page.dart';
+import 'package:instagram_clone/pages/sing_up_page.dart';
 import 'package:instagram_clone/responsive/mobilescreenLayout.dart';
 import 'package:instagram_clone/responsive/responsiveLauout.dart';
 import 'package:instagram_clone/responsive/webscreenLayout.dart';
@@ -34,11 +36,9 @@ class MyApp extends StatelessWidget {
       title: "Instagram clone",
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark()
-          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      home: const ResponsiveLayout(
-        webScreen: Webscreenlayout(),
-        mobileScreen: MobileScreenlayout(),
-      ),
+          .copyWith(scaffoldBackgroundColor: mobileSearchColor),
+     
+     home: const SingUpPage(),
     );
   }
 }
