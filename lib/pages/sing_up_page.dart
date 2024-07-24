@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/pages/login_page.dart';
 import 'package:instagram_clone/service/authentication.dart';
 import 'package:instagram_clone/service/media.dart';
 import 'package:instagram_clone/service/storage.dart';
@@ -61,6 +62,16 @@ class _SingUpPageState extends State<SingUpPage> {
     setState(() {
       isLoading = !isLoading;
     });
+  }
+
+  //navigator
+  void navigateToLogInPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginPage(),
+      ),
+    );
   }
 
   @override
@@ -201,7 +212,7 @@ class _SingUpPageState extends State<SingUpPage> {
                       style: label,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: navigateToLogInPage,
                       child: Text(
                         "Sing In",
                         style: label.copyWith(color: ternerycolor),
