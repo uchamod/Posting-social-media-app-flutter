@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/pages/sing_up_page.dart';
 import 'package:instagram_clone/service/authentication.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
@@ -38,6 +39,15 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       isLoadding = !isLoadding;
     });
+  }
+  //navigator
+  void navigateToSingInPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SingUpPage(),
+      ),
+    );
   }
 
   @override
@@ -98,12 +108,17 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
-                      child: Center(
-                        child: Text(
-                          "Log In",
-                          style: title.copyWith(color: primaryColor),
-                        ),
-                      ),
+                      child: isLoadding
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ))
+                          : Center(
+                              child: Text(
+                                "Log In",
+                                style: title.copyWith(color: primaryColor),
+                              ),
+                            ),
                     ),
                   ),
                 ],
@@ -122,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: label,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed:navigateToSingInPage,
                     child: Text(
                       "Sing Up",
                       style: label.copyWith(color: ternerycolor),

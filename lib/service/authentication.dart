@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/pages/homepage.dart';
+import 'package:instagram_clone/responsive/mobilescreenLayout.dart';
+import 'package:instagram_clone/responsive/responsiveLauout.dart';
+import 'package:instagram_clone/responsive/webscreenLayout.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
 
@@ -55,6 +57,16 @@ class Authentication {
           "following": [],
         });
         massage("Succsussful Registation", context);
+        //navigate to homepage
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+              webScreen: Webscreenlayout(),
+              mobileScreen: MobileScreenlayout(),
+            ),
+          ),
+        );
       } else {
         massage("You have missing data", context);
       }
@@ -80,10 +92,14 @@ class Authentication {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Homepage(),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+              webScreen: Webscreenlayout(),
+              mobileScreen: MobileScreenlayout(),
+            ),
+          ),
+        );
         // massage("Succsussfuly Log In", context);
       } else {
         massage("Missing credientials", context);
