@@ -1,19 +1,35 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:instagram_clone/pages/homepage.dart';
+import 'package:instagram_clone/util/colors.dart';
+import 'package:instagram_clone/util/text_styles.dart';
 
 //add firebase auth methods to sing up and sing in users
 class Authentication {
+  //instances
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestorege = FirebaseFirestore.instance;
-  Future<String> singUpUser(
+
+  void massage(String res, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: textboxfillcolor,
+        content: Text(
+          res,
+          style: body,
+        ),
+      ),
+    );
+  }
+
+  Future<void> singUpUser(
       {required String email,
       required String password,
       required String username,
       required String bio,
-    //  required Uint8List imgfile
-      }) async {
+      String proPic = "",
+      required BuildContext context}) async {
     try {
       //create a new user
       if (email.isNotEmpty &&
@@ -24,6 +40,9 @@ class Authentication {
             .createUserWithEmailAndPassword(email: email, password: password);
         //get created user id
         final user = userCredential.user!.uid;
+
+        //  String url = await _storageServices.uploadImagesToStorage(
+        //       "profile pics", imgfile, false);
         //store user data
         await _firestorege.collection("users").doc(user).set({
           "uid": user,
@@ -31,15 +50,46 @@ class Authentication {
           "email": email,
           "password": password,
           "bio": bio,
+          "avatar": proPic,
           "followers": [],
           "following": [],
         });
-        print("succuss");
+        massage("Succsussful Registation", context);
+      } else {
+        massage("You have missing data", context);
       }
-      print("details missing");
+    } on FirebaseAuthException catch (err) {
+      if (err.code == "invalid-email") {
+        massage("Invalid email format", context);
+      } else {
+        massage("Invalid password format", context);
+      }
     } catch (err) {
-      print(err.toString());
+      massage("something went wrong", context);
     }
-    return "";
+  }
+
+  //login user
+  Future<void> singInUser(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    // String response = "Invalid username or password";
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Homepage(),
+            ));
+        // massage("Succsussfuly Log In", context);
+      } else {
+        massage("Missing credientials", context);
+      }
+    } catch (err) {
+      massage(err.toString(), context);
+    }
   }
 }
