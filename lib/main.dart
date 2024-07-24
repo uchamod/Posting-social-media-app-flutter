@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileSearchColor),
      
-     home: const SingUpPage(),
+     home: const LoginPage(),
     );
   }
 }

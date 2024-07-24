@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/service/authentication.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
 import 'package:instagram_clone/util/variabals.dart';
@@ -15,12 +16,28 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final Authentication _authentication = Authentication();
+  bool isLoadding = false;
+
   @override
   void dispose() {
     // TODO: implement dispose
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void SingInUserAndToggleHome() async {
+    setState(() {
+      isLoadding = !isLoadding;
+    });
+    await _authentication.singInUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        context: context);
+    setState(() {
+      isLoadding = !isLoadding;
+    });
   }
 
   @override
@@ -70,8 +87,8 @@ class _LoginPageState extends State<LoginPage> {
                     height: 40,
                   ),
                   //login button
-                  GestureDetector(
-                    onTap: () {},
+                  InkWell(
+                    onTap: SingInUserAndToggleHome,
                     child: Container(
                       width: double.infinity,
                       height: MediaQuery.of(context).size.width * 0.13,
@@ -84,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Center(
                         child: Text(
                           "Log In",
-                          style: title.copyWith(color: mobileBackgroundColor),
+                          style: title.copyWith(color: primaryColor),
                         ),
                       ),
                     ),
