@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/responsive/mobilescreenLayout.dart';
 import 'package:instagram_clone/responsive/responsiveLauout.dart';
 import 'package:instagram_clone/responsive/webscreenLayout.dart';
@@ -25,6 +26,15 @@ class Authentication {
     );
   }
 
+  //get current user detils
+  Future<UserModel> getUserDetails() async {
+    User? user = _auth.currentUser;
+    DocumentSnapshot snapshot =
+        await _firestorege.collection("users").doc(user!.uid).get();
+
+    return UserModel.mapUserData(snapshot);
+  }
+
   Future<void> singUpUser(
       {required String email,
       required String password,
@@ -42,18 +52,17 @@ class Authentication {
             .createUserWithEmailAndPassword(email: email, password: password);
         //get created user id
         final user = userCredential.user!.uid;
-
+        UserModel newUser = UserModel(
+            user: user,
+            username: username,
+            email: email,
+            password: password,
+            bio: bio,
+            proPic: proPic,
+            followres: [],
+            following: []);
         //store user data
-        await _firestorege.collection("users").doc(user).set({
-          "uid": user,
-          "username": username,
-          "email": email,
-          "password": password,
-          "bio": bio,
-          "avatar": proPic,
-          "followers": [],
-          "following": [],
-        });
+        await _firestorege.collection("users").doc(user).set(newUser.toJson());
         massage("Succsussful Registation", context);
         //navigate to homepage
         Navigator.push(
