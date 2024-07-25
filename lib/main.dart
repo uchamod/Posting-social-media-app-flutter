@@ -3,10 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/pages/login_page.dart';
+import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/responsive/mobilescreenLayout.dart';
 import 'package:instagram_clone/responsive/responsiveLauout.dart';
 import 'package:instagram_clone/responsive/webscreenLayout.dart';
 import 'package:instagram_clone/util/colors.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,9 @@ void main() async {
     await Firebase.initializeApp();
   }
 
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => UserProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -32,40 +36,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Instagram clone",
-      debugShowCheckedModeBanner: false,
-      theme:
-          ThemeData.dark().copyWith(scaffoldBackgroundColor: mobileSearchColor),
-      //check app state and render the relevant state
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            //if user currently singIn
-            if (snapshot.hasData) {
-              return const ResponsiveLayout(
-                webScreen: Webscreenlayout(),
-                mobileScreen: MobileScreenlayout(),
-              );
-              //if has some error
-            } else if (snapshot.hasError) {
+    return ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child: MaterialApp(
+        title: "Instagram clone",
+        debugShowCheckedModeBanner: false,
+        theme:
+            ThemeData.dark().copyWith(scaffoldBackgroundColor: mobileSearchColor),
+        //check app state and render the relevant state
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              //if user currently singIn
+              if (snapshot.hasData) {
+                // return const ResponsiveLayout(
+                //   webScreen: Webscreenlayout(),
+                //   mobileScreen: MobileScreenlayout(),
+                // );
+                 return const LoginPage();
+                //if has some error
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text("something went wrong"),
+                );
+              }
+            }
+            //if connection not stablish
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
-                child: Text("something went wrong"),
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                ),
               );
             }
-          }
-          //if connection not stablish
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: primaryColor,
-              ),
-            );
-          }
-          //if user currently sing out
-          return const LoginPage();
-        },
+            //if user currently sing out
+            return const LoginPage();
+          },
+        ),
       ),
     );
   }
