@@ -43,8 +43,6 @@ class Authentication {
         //get created user id
         final user = userCredential.user!.uid;
 
-        //  String url = await _storageServices.uploadImagesToStorage(
-        //       "profile pics", imgfile, false);
         //store user data
         await _firestorege.collection("users").doc(user).set({
           "uid": user,
@@ -109,3 +107,6 @@ class Authentication {
     }
   }
 }
+
+        //  String url = await _storageServices.uploadImagesToStorage(
+        //       "profile pics", imgfile, false);
