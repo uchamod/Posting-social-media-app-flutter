@@ -40,6 +40,13 @@ class _MobileScreenlayoutState extends State<MobileScreenlayout> {
   Widget build(BuildContext context) {
     //   UserProvider userProvider = UserProvider();
     UserModel user = Provider.of<UserProvider>(context).getCurrentUser;
+    Icon bottomNavIcon(IconData icon, int page) {
+      return Icon(
+        icon,
+        size: _page == page ? 34 : 30,
+        color: _page == page ? ternerycolor : primaryColor.withOpacity(0.7),
+      );
+    }
 
     return Scaffold(
         body: PageView(
@@ -59,35 +66,20 @@ class _MobileScreenlayoutState extends State<MobileScreenlayout> {
           currentIndex: _page,
           items: [
             BottomNavigationBarItem(
-                icon: Icon(
-              Icons.home,
-              size: _page == 0 ? 34 : 30,
-              color: _page == 0 ? primaryColor : primaryColor.withOpacity(0.7),
-            )),
+              icon: bottomNavIcon(Icons.home, 0),
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-              Icons.search,
-              size: _page == 1 ? 34 : 30,
-              color: _page == 1 ? primaryColor : primaryColor.withOpacity(0.7),
-            )),
+              icon: bottomNavIcon(Icons.search, 1),
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-              Icons.add_circle,
-              size: _page == 2 ? 34 : 30,
-              color: _page == 2 ? primaryColor : primaryColor.withOpacity(0.7),
-            )),
+              icon: bottomNavIcon(Icons.add_circle, 2),
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-              Icons.notifications,
-              size: _page == 3 ? 34 : 30,
-              color: _page == 3 ? primaryColor : primaryColor.withOpacity(0.7),
-            )),
+              icon: bottomNavIcon(Icons.notifications, 3),
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-              Icons.person,
-              size: _page == 4 ? 34 : 30,
-              color: _page == 4 ? primaryColor : primaryColor.withOpacity(0.7),
-            )),
+              icon: bottomNavIcon(Icons.person, 4),
+            ),
           ],
         ));
   }
