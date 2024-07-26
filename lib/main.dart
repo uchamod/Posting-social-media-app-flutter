@@ -50,11 +50,11 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.active) {
               //if user currently singIn
               if (snapshot.hasData) {
-                // return const ResponsiveLayout(
-                //   webScreen: Webscreenlayout(),
-                //   mobileScreen: MobileScreenlayout(),
-                // );
-                 return const LoginPage();
+                return const ResponsiveLayout(
+                  webScreen: Webscreenlayout(),
+                  mobileScreen: MobileScreenlayout(),
+                );
+                
                 //if has some error
               } else if (snapshot.hasError) {
                 return const Center(

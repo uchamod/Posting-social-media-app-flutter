@@ -14,7 +14,7 @@ class StorageServices {
       Reference reference =
           _storage.ref().child(folderName).child(_auth.currentUser!.uid);
       //create uploadtask
-      UploadTask uploadTask = reference.putData(file!);
+      UploadTask uploadTask = reference.putData(file);
       //get snapshot
       TaskSnapshot snapshot = await uploadTask;
       //get url of stored image and return
