@@ -89,7 +89,8 @@ class _AddPostPageState extends State<AddPostPage> {
       isLoading = true;
     });
     try {
-      _fireStoreMethods.uploadPost(
+      print("waiting...");
+      await _fireStoreMethods.uploadPost(
         _controller.text,
         _image!,
         userid,
@@ -99,9 +100,12 @@ class _AddPostPageState extends State<AddPostPage> {
       );
       setState(() {
         isLoading = false;
-        clearPostmood();
       });
+      clearPostmood();
     } catch (err) {
+      setState(() {
+        isLoading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -115,7 +119,9 @@ class _AddPostPageState extends State<AddPostPage> {
 
   //clear posting mood
   void clearPostmood() {
-    _image = null;
+    setState(() {
+      _image = null;
+    });
   }
 
   @override
@@ -159,10 +165,13 @@ class _AddPostPageState extends State<AddPostPage> {
           )
         : Scaffold(
             appBar: AppBar(
-              leading: const Icon(
-                Icons.arrow_back,
-                size: 25,
-                color: primaryColor,
+              leading: IconButton(
+                onPressed: clearPostmood,
+                icon: const Icon(
+                  Icons.arrow_back,
+                  size: 25,
+                  color: primaryColor,
+                ),
               ),
               title: Text(
                 "Create Post",
@@ -196,7 +205,14 @@ class _AddPostPageState extends State<AddPostPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  isLoading ? LinearProgressIndicator() : SizedBox(),
+                  isLoading
+                      ? const LinearProgressIndicator()
+                      : const Padding(
+                          padding: EdgeInsets.only(top: 0),
+                        ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   CircleAvatar(
                     backgroundImage: _image == null
                         ? const AssetImage(

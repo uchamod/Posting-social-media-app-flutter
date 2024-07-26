@@ -38,10 +38,12 @@ class FireStoreMethods {
       String postid = Uuid().v1();
       PostModel newPost = PostModel(
           user: userid,
+         publishedDate: DateTime.now(),
           username: username,
           email: email,
           postid: postid,
           postUrl: url,
+          
           discription: discription,
           likes: []);
       //upload to post collection    
