@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class StorageServices {
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -13,6 +14,11 @@ class StorageServices {
       //get the path
       Reference reference =
           _storage.ref().child(folderName).child(_auth.currentUser!.uid);
+
+      if (isPost) {
+        String postid = Uuid().v1();
+        reference = reference.child(postid);
+      }
       //create uploadtask
       UploadTask uploadTask = reference.putData(file);
       //get snapshot

@@ -7,6 +7,7 @@ class PostModel {
   final String email;
   final String postid;
   final String postUrl;
+  final DateTime publishedDate;
   final String discription;
   final dynamic likes;
 
@@ -16,6 +17,7 @@ class PostModel {
       required this.email,
       required this.postid,
       required this.postUrl,
+      required this.publishedDate,
       required this.discription,
       required this.likes});
 
@@ -25,6 +27,7 @@ class PostModel {
         "email": email,
         "postid": postid,
         "posturl": postUrl,
+        "date": publishedDate,
         "discription": discription,
         "likes": likes
       };
@@ -37,6 +40,7 @@ class PostModel {
         email: snapshot["email"],
         postid: snapshot["postid"],
         postUrl: snapshot["posturl"],
+        publishedDate: snapshot["date"],
         discription: snapshot["discription"],
         likes: snapshot["likes"]);
   }
