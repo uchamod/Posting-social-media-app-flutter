@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/util/colors.dart';
@@ -15,6 +16,8 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: mobileSearchColor,
+        forceMaterialTransparency: true,
         title: SvgPicture.asset(
           "assets/Posting.svg",
           height: 50,
@@ -30,15 +33,24 @@ class _HomepageState extends State<Homepage> {
               ))
         ],
       ),
-      body: const Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Postcard(),
-            ],
-          ),
-        ),
+      //get the post data
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("posts").snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // ignore: prefer_const_constructors
+            return Center(
+              child: const CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              return Postcard(snap: snapshot.data!.docs[index].data());
+            },
+          );
+        },
       ),
     );
   }

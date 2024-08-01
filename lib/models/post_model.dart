@@ -10,6 +10,7 @@ class PostModel {
   final DateTime publishedDate;
   final String discription;
   final dynamic likes;
+  final String profUrl;
 
   PostModel(
       {required this.user,
@@ -19,7 +20,8 @@ class PostModel {
       required this.postUrl,
       required this.publishedDate,
       required this.discription,
-      required this.likes});
+      required this.likes,
+      required this.profUrl});
 
   Map<String, dynamic> toJson() => {
         "uid": user,
@@ -29,7 +31,8 @@ class PostModel {
         "posturl": postUrl,
         "date": publishedDate,
         "discription": discription,
-        "likes": likes
+        "likes": likes,
+        "profUrl": profUrl
       };
 //map user data to user model
   static PostModel mapPostData(DocumentSnapshot snap) {
@@ -42,6 +45,7 @@ class PostModel {
         postUrl: snapshot["posturl"],
         publishedDate: snapshot["date"],
         discription: snapshot["discription"],
-        likes: snapshot["likes"]);
+        likes: snapshot["likes"],
+        profUrl: snapshot["profUrl"]);
   }
 }

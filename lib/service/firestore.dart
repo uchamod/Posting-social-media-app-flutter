@@ -26,6 +26,7 @@ class FireStoreMethods {
   Future<void> uploadPost(
     String discription,
     Uint8List postimg,
+    String profimg,
     String userid,
     String username,
     String email,
@@ -43,7 +44,7 @@ class FireStoreMethods {
           email: email,
           postid: postid,
           postUrl: url,
-          
+          profUrl: profimg,
           discription: discription,
           likes: []);
       //upload to post collection    

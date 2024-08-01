@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: "Instagram clone",
         debugShowCheckedModeBanner: false,
-        theme:
-            ThemeData.dark().copyWith(scaffoldBackgroundColor: mobileSearchColor),
+        theme: ThemeData.dark()
+            .copyWith(scaffoldBackgroundColor: mobileSearchColor),
         //check app state and render the relevant state
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
                   webScreen: Webscreenlayout(),
                   mobileScreen: MobileScreenlayout(),
                 );
-                
+
                 //if has some error
               } else if (snapshot.hasError) {
                 return const Center(
