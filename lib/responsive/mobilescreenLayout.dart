@@ -43,15 +43,17 @@ class _MobileScreenlayoutState extends State<MobileScreenlayout> {
     Icon bottomNavIcon(IconData icon, int page) {
       return Icon(
         icon,
-        size: _page == page ? 34 : 30,
-        color: _page == page ? ternerycolor : primaryColor.withOpacity(0.7),
+        size: _page == page ? 35 : 30,
+        color: _page == page ? ternerycolor : primaryColor,
       );
     }
 
     return Scaffold(
         body: PageView(
           controller: _pageController,
+           pageSnapping: true,
           onPageChanged: pageChange,
+          scrollDirection: Axis.horizontal,
           children: const [
             Homepage(),
             SerchPage(),
