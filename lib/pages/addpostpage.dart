@@ -26,6 +26,7 @@ class _AddPostPageState extends State<AddPostPage> {
   bool isLoading = false;
   //select image option using dialog box
   _selectImage(BuildContext parentcontext) async {
+    //show media selector | dialog box
     return showDialog(
       context: parentcontext,
       builder: (context) {
@@ -51,7 +52,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 });
               },
             ),
-            Divider(),
+            const Divider(),
             //select image from gallery
             SimpleDialogOption(
               child: Text(
@@ -66,7 +67,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 });
               },
             ),
-            Divider(),
+            const Divider(),
             //cancel selection
             SimpleDialogOption(
               child: Text(
@@ -84,7 +85,8 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   //upload new post to firestore
-  void uploadNewPost(String userid, String username, String email) async {
+  void uploadNewPost(
+      String userid, String username, String email, String profImg) async {
     setState(() {
       isLoading = true;
     });
@@ -93,6 +95,7 @@ class _AddPostPageState extends State<AddPostPage> {
       await _fireStoreMethods.uploadPost(
         _controller.text,
         _image!,
+        profImg,
         userid,
         username,
         email,
@@ -181,7 +184,8 @@ class _AddPostPageState extends State<AddPostPage> {
                 InkWell(
                   onTap: () {
                     UserModel user = userProvider.getCurrentUser;
-                    uploadNewPost(user.user, user.username, user.email);
+                    uploadNewPost(
+                        user.user, user.username, user.email, user.proPic);
                   },
                   child: Container(
                     padding:
