@@ -40,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
       isLoadding = !isLoadding;
     });
   }
+
   //navigator
   void navigateToSingInPage() {
     Navigator.push(
@@ -65,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
               //logo
               Center(
                 child: SvgPicture.asset(
-                  "assets/instagram_wordmark_logo_icon_169660.svg",
+                  "assets/Posting.svg",
                   color: primaryColor,
                   height: 80,
                 ),
@@ -137,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: label,
                   ),
                   TextButton(
-                    onPressed:navigateToSingInPage,
+                    onPressed: navigateToSingInPage,
                     child: Text(
                       "Sing Up",
                       style: label.copyWith(color: ternerycolor),

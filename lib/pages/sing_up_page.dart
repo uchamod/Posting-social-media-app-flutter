@@ -52,6 +52,7 @@ class _SingUpPageState extends State<SingUpPage> {
     });
     String url = await StorageServices()
         .uploadImagesToStorage("profile pics", _image!, false);
+    //print("waiting");
     await _authServises.singUpUser(
         email: _emailController.text,
         password: _passwordController.text,
@@ -59,6 +60,7 @@ class _SingUpPageState extends State<SingUpPage> {
         bio: _bioController.text,
         proPic: url,
         context: context);
+   // print("done");
     setState(() {
       isLoading = !isLoading;
     });
@@ -90,7 +92,7 @@ class _SingUpPageState extends State<SingUpPage> {
                 //logo
                 Center(
                   child: SvgPicture.asset(
-                    "assets/instagram_wordmark_logo_icon_169660.svg",
+                    "assets/Posting.svg",
                     color: primaryColor,
                     height: 80,
                   ),
