@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
               //if user currently singIn
               if (snapshot.hasData) {
                 return const ResponsiveLayout(
+                  //return const LoginPage();
                   webScreen: Webscreenlayout(),
                   mobileScreen: MobileScreenlayout(),
                 );

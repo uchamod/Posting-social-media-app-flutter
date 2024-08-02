@@ -7,9 +7,9 @@ class UserProvider extends ChangeNotifier {
   final Authentication _auth = Authentication();
   UserModel get getCurrentUser => _currentUser!;
 
-UserProvider() {
-  refreshUser();
-  }
+// UserProvider() {
+//   refreshUser();
+//   }
   //refresh the user state when change was happend
   Future<void> refreshUser() async {
     UserModel currentUser = await _auth.getUserDetails();
