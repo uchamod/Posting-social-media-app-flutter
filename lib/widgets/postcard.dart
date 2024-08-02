@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/models/user_model.dart';
+import 'package:instagram_clone/provider/user_provider.dart';
+import 'package:instagram_clone/service/firestore.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
+import 'package:instagram_clone/widgets/likeanimation.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class Postcard extends StatefulWidget {
   final snap;
@@ -12,8 +17,13 @@ class Postcard extends StatefulWidget {
 }
 
 class _PostcardState extends State<Postcard> {
+  //varibles
+  bool isAnimate = false;
   @override
   Widget build(BuildContext context) {
+    ///get current user
+    final UserModel currentUser =
+        Provider.of<UserProvider>(context).getCurrentUser;
     return Container(
       padding: const EdgeInsets.only(top: 8),
       child: Column(
@@ -49,8 +59,10 @@ class _PostcardState extends State<Postcard> {
                 ),
               ),
               const Spacer(),
+              //menu icon
               IconButton(
                   onPressed: () {
+                    //show menu
                     showDialog(
                       context: context,
                       builder: (context) {
@@ -91,6 +103,7 @@ class _PostcardState extends State<Postcard> {
                   ))
             ],
           ),
+          //discription
           //ToDo place
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
@@ -100,10 +113,50 @@ class _PostcardState extends State<Postcard> {
             ),
           ),
           //post image
-          Image.network(
-            widget.snap["posturl"].toString(),
-            alignment: Alignment.center,
-            fit: BoxFit.contain,
+          GestureDetector(
+            onDoubleTap: () async {
+              await FireStoreMethods().likePost(widget.snap['postid'],
+                  currentUser.user, widget.snap['likes']);
+        
+              setState(() {
+                isAnimate = true;
+              });
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                //post
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.42,
+                  width: double.infinity,
+                  child: Image.network(
+                    widget.snap["posturl"].toString(),
+                    alignment: Alignment.center,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                //like animation
+                Center(
+                  child: AnimatedOpacity(
+                    opacity: isAnimate ? 1 : 0,
+                    duration: const Duration(milliseconds: 300),
+                    child: Likeanimation(
+                      isAnimating: isAnimate,
+                      duration: const Duration(milliseconds: 300),
+                      onEnd: () {
+                        setState(() {
+                          isAnimate = false;
+                        });
+                      },
+                      child: const Icon(
+                        Icons.favorite_rounded,
+                        size: 100,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           //likes and comments section
           Row(
@@ -113,7 +166,7 @@ class _PostcardState extends State<Postcard> {
                 onPressed: () {},
                 child: Text(
                   // ignore: prefer_interpolation_to_compose_strings
-                  "likes " + widget.snap["likes"].length.toString(),
+                  "likes " + widget.snap['likes'].length.toString(),
                   style: label.copyWith(fontSize: 14, color: secondaryColor),
                 ),
               ),
@@ -130,6 +183,7 @@ class _PostcardState extends State<Postcard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              //comment
               IconButton(
                   onPressed: () {},
                   icon: const Icon(
@@ -137,13 +191,22 @@ class _PostcardState extends State<Postcard> {
                     size: 30,
                     color: primaryColor,
                   )),
+              //like
               IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite_border_rounded,
-                    size: 30,
-                    color: primaryColor,
-                  )),
+                icon: Icon(
+                  widget.snap["likes"].contains(currentUser.user)
+                      ? Icons.favorite
+                      : Icons.favorite_border_rounded,
+                  size: 30,
+                  color: primaryColor,
+                ),
+                onPressed: () {
+                  FireStoreMethods().likePost(widget.snap['postid'].toString(),
+                      currentUser.user, widget.snap['likes']);
+                
+                },
+              ),
+              //share
               IconButton(
                   onPressed: () {},
                   icon: const Icon(

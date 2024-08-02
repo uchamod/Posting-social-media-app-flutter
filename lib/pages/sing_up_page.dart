@@ -60,10 +60,14 @@ class _SingUpPageState extends State<SingUpPage> {
         bio: _bioController.text,
         proPic: url,
         context: context);
-   // print("done");
+    // print("done");
     setState(() {
       isLoading = !isLoading;
     });
+    _emailController.clear();
+    _bioController.clear();
+    _usernameController.clear();
+    _passwordController.clear();
   }
 
   //navigator

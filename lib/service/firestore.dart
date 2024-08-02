@@ -22,6 +22,7 @@ class FireStoreMethods {
       ),
     );
   }
+
   //upload a new post
   Future<void> uploadPost(
     String discription,
@@ -39,7 +40,7 @@ class FireStoreMethods {
       String postid = Uuid().v1();
       PostModel newPost = PostModel(
           user: userid,
-         publishedDate: DateTime.now(),
+          publishedDate: DateTime.now(),
           username: username,
           email: email,
           postid: postid,
@@ -47,11 +48,30 @@ class FireStoreMethods {
           profUrl: profimg,
           discription: discription,
           likes: []);
-      //upload to post collection    
-    await  _firestore.collection("posts").doc(postid).set(newPost.toJson());
+      //upload to post collection
+      await _firestore.collection("posts").doc(postid).set(newPost.toJson());
       massage("Posting Succsussfuly", context);
     } catch (err) {
       massage(err.toString(), context);
     }
+  }
+
+  //like a post
+  Future<void> likePost(String postid, String userId, List likes) async {
+    try {
+      if (likes.contains(userId)) {
+        await _firestore.collection("posts").doc(postid).update({
+          "likes": FieldValue.arrayRemove([userId])
+        });
+      } else {
+        //if the userid not exist in list add the userid(like the post)
+        await _firestore.collection("posts").doc(postid).update({
+          "likes": FieldValue.arrayUnion([userId])
+        });
+      }
+    } catch (err) {
+      print(err.toString() + "something happend");
+    }
+    //if the userid already exist in list remove the userid(dislike the post)
   }
 }
