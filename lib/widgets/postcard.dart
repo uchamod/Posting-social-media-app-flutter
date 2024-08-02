@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user_model.dart';
+import 'package:instagram_clone/pages/commentpage.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/service/firestore.dart';
 import 'package:instagram_clone/util/colors.dart';
@@ -117,7 +118,7 @@ class _PostcardState extends State<Postcard> {
             onDoubleTap: () async {
               await FireStoreMethods().likePost(widget.snap['postid'],
                   currentUser.user, widget.snap['likes']);
-        
+
               setState(() {
                 isAnimate = true;
               });
@@ -185,7 +186,15 @@ class _PostcardState extends State<Postcard> {
             children: [
               //comment
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Commentpage(
+                            postId: widget.snap["postid"],
+                          ),
+                        ));
+                  },
                   icon: const Icon(
                     Icons.comment_outlined,
                     size: 30,
@@ -203,7 +212,6 @@ class _PostcardState extends State<Postcard> {
                 onPressed: () {
                   FireStoreMethods().likePost(widget.snap['postid'].toString(),
                       currentUser.user, widget.snap['likes']);
-                
                 },
               ),
               //share

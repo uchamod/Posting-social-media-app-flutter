@@ -86,22 +86,4 @@ class _MobileScreenlayoutState extends State<MobileScreenlayout> {
         ));
   }
 }
- // String username = "";
-
-  // //get current user data as snapshot
-  // Future<void> getUserName() async {
-  //   DocumentSnapshot snapshot = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(FirebaseAuth.instance.currentUser!.uid)
-  //       .get();
-
-  //   setState(() {
-  //     username = (snapshot.data() as Map<String, dynamic>)["username"];
-  //   });
-  // }
-
-     // addData() async {
-    //   UserProvider userProvider =
-    //       Provider.of<UserProvider>(context, listen: true);
-    //   await userProvider.refreshUser();
-    // }
+ 

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/models/comment_model.dart';
 import 'package:instagram_clone/models/post_model.dart';
 import 'package:instagram_clone/service/storage.dart';
 import 'package:instagram_clone/util/colors.dart';
@@ -59,6 +60,7 @@ class FireStoreMethods {
   //like a post
   Future<void> likePost(String postid, String userId, List likes) async {
     try {
+      //if the userid already exist in list remove the userid(dislike the post)
       if (likes.contains(userId)) {
         await _firestore.collection("posts").doc(postid).update({
           "likes": FieldValue.arrayRemove([userId])
@@ -72,6 +74,33 @@ class FireStoreMethods {
     } catch (err) {
       print(err.toString() + "something happend");
     }
-    //if the userid already exist in list remove the userid(dislike the post)
+  }
+
+  //comment a post
+  Future<void> commentPost(String userId, String postId, String userName,
+      String proPic, String comment) async {
+    try {
+      //comment id
+      String commentId = Uuid().v4();
+      CommentModel commentModel = CommentModel(
+          commentId: commentId,
+          postId: postId,
+          userId: userId,
+          userName: userName,
+          proPic: proPic,
+          comment: comment,
+          likes: [],
+          publishedData: DateTime.now());
+      //set new comment
+      await _firestore
+          .collection("posts")
+          .doc(postId)
+          .collection("comments")
+          .doc(commentId)
+          .set(commentModel.toJson());
+      print("commented");
+    } catch (err) {
+      print(err.toString() + "not commented");
+    }
   }
 }
