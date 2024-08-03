@@ -18,6 +18,7 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         backgroundColor: mobileSearchColor,
         forceMaterialTransparency: true,
+        automaticallyImplyLeading: false,
         title: SvgPicture.asset(
           "assets/Posting.svg",
           height: 50,

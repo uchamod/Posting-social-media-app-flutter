@@ -51,7 +51,7 @@ class _MobileScreenlayoutState extends State<MobileScreenlayout> {
     return Scaffold(
         body: PageView(
           controller: _pageController,
-           pageSnapping: true,
+          pageSnapping: true,
           onPageChanged: pageChange,
           scrollDirection: Axis.horizontal,
           children: const [
@@ -86,4 +86,3 @@ class _MobileScreenlayoutState extends State<MobileScreenlayout> {
         ));
   }
 }
- 

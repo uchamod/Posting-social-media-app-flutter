@@ -18,7 +18,7 @@ class Commentpage extends StatefulWidget {
 
 class _CommentpageState extends State<Commentpage> {
   //comment controller
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   //commenting
   void commentPost(
@@ -46,6 +46,8 @@ class _CommentpageState extends State<Commentpage> {
         Provider.of<UserProvider>(context).getCurrentUser;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: mobileSearchColor,
+        forceMaterialTransparency: true,
         title: Text(
           "Comments",
           style: title,
@@ -56,6 +58,7 @@ class _CommentpageState extends State<Commentpage> {
             .collection("posts")
             .doc(widget.postId)
             .collection("comments")
+            .orderBy("date", descending: true)
             .snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -113,7 +116,10 @@ class _CommentpageState extends State<Commentpage> {
   //comment text feild
   Widget textFiled(TextEditingController controller) {
     return TextField(
+      textInputAction: TextInputAction.done,
       controller: controller,
+      maxLines: null,
+      minLines: 1,
       decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -143,6 +149,3 @@ class _CommentpageState extends State<Commentpage> {
     );
   }
 }
-
-
- 
