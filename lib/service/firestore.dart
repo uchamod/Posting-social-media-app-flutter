@@ -81,26 +81,37 @@ class FireStoreMethods {
       String proPic, String comment) async {
     try {
       //comment id
-      String commentId = Uuid().v4();
-      CommentModel commentModel = CommentModel(
-          commentId: commentId,
-          postId: postId,
-          userId: userId,
-          userName: userName,
-          proPic: proPic,
-          comment: comment,
-          likes: [],
-          publishedData: DateTime.now());
-      //set new comment
-      await _firestore
-          .collection("posts")
-          .doc(postId)
-          .collection("comments")
-          .doc(commentId)
-          .set(commentModel.toJson());
-      print("commented");
+      if (comment.isNotEmpty) {
+        String commentId = Uuid().v4();
+        CommentModel commentModel = CommentModel(
+            commentId: commentId,
+            postId: postId,
+            userId: userId,
+            userName: userName,
+            proPic: proPic,
+            comment: comment,
+            likes: [],
+            publishedData: DateTime.now());
+        //set new comment
+        await _firestore
+            .collection("posts")
+            .doc(postId)
+            .collection("comments")
+            .doc(commentId)
+            .set(commentModel.toJson());
+        print("commented");
+      }
     } catch (err) {
       print(err.toString() + "not commented");
+    }
+  }
+
+  //delete a post
+  Future<void> deletePost(String postid) async {
+    try {
+      await _firestore.collection("posts").doc(postid).delete();
+    } catch (err) {
+      print(err.toString());
     }
   }
 }

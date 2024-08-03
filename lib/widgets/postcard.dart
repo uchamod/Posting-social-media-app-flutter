@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/pages/commentpage.dart';
@@ -18,8 +19,38 @@ class Postcard extends StatefulWidget {
 }
 
 class _PostcardState extends State<Postcard> {
+  int comment = 0;
   //varibles
   bool isAnimate = false;
+  @override
+  void initState() {
+    super.initState();
+    fetchCommentLenth();
+  }
+
+  //fethch comment lenth
+  void fetchCommentLenth() async {
+    try {
+      //fetch the documents
+      QuerySnapshot docSnap = await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(widget.snap["postid"])
+          .collection("comments")
+          .get();
+
+      comment = docSnap.docs.length;
+    } catch (err) {
+      print(err.toString() + "some thing happend");
+    }
+    setState(() {});
+  }
+
+  ///deletepost
+  void deletePost(String postid) async {
+    await FireStoreMethods().deletePost(postid);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     ///get current user
@@ -73,14 +104,18 @@ class _PostcardState extends State<Postcard> {
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero),
                           clipBehavior: Clip.hardEdge,
-                          alignment: Alignment.topRight,
+                          alignment: Alignment.center,
                           child: ListView(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 12),
                             shrinkWrap: true,
                             children: ["Remove Post", "Save Post"]
                                 .map((ele) => InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        ele == "Remove Post"
+                                            ? Navigator.of(context).pop()
+                                            : Navigator.of(context).pop();
+                                      },
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 8),
@@ -107,7 +142,8 @@ class _PostcardState extends State<Postcard> {
           //discription
           //ToDo place
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+            padding:
+                const EdgeInsets.only(top: 10, bottom: 10, left: 13, right: 8),
             child: Text(
               widget.snap["discription"].toString(),
               style: body.copyWith(fontWeight: FontWeight.w200),
@@ -167,14 +203,14 @@ class _PostcardState extends State<Postcard> {
                 onPressed: () {},
                 child: Text(
                   // ignore: prefer_interpolation_to_compose_strings
-                  "likes " + widget.snap['likes'].length.toString(),
+                  widget.snap['likes'].length.toString() + " likes",
                   style: label.copyWith(fontSize: 14, color: secondaryColor),
                 ),
               ),
               TextButton(
                 onPressed: () {},
                 child: Text(
-                  "1.1k comments",
+                  "$comment comments",
                   style: label.copyWith(fontSize: 14, color: secondaryColor),
                 ),
               ),

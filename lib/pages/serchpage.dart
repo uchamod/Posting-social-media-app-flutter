@@ -11,6 +11,20 @@ class _SerchPageState extends State<SerchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: TextFormField(
+          
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: ,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(width: 0)
+
+            )
+          ),
+        ),
+      ),
       body: Center(
         child: Text("this is serch page"),
       ),
