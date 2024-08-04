@@ -6,6 +6,7 @@ import 'package:instagram_clone/service/firestore.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
 import 'package:instagram_clone/widgets/commentcard.dart';
+import 'package:instagram_clone/widgets/reusable_textfiled.dart';
 import 'package:provider/provider.dart';
 
 class Commentpage extends StatefulWidget {
@@ -93,7 +94,8 @@ class _CommentpageState extends State<Commentpage> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: textFiled(_controller),
+                  child: ReusableTextfiled(
+                      controller: _controller, hint: "comments..."),
                 ),
               ),
               InkWell(
@@ -110,42 +112,6 @@ class _CommentpageState extends State<Commentpage> {
           ),
         ),
       ),
-    );
-  }
-
-  //comment text feild
-  Widget textFiled(TextEditingController controller) {
-    return TextField(
-      textInputAction: TextInputAction.done,
-      controller: controller,
-      maxLines: null,
-      minLines: 1,
-      decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(
-              width: 0,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(
-              width: 0,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(
-              width: 0,
-            ),
-          ),
-          enabled: true,
-          filled: true,
-          fillColor: textboxfillcolor.withOpacity(0.5),
-          hintText: "Comment...",
-          hintStyle: hinttext),
     );
   }
 }
