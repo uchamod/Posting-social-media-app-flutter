@@ -54,13 +54,22 @@ class _MobileScreenlayoutState extends State<MobileScreenlayout> {
           pageSnapping: true,
           onPageChanged: pageChange,
           scrollDirection: Axis.horizontal,
-          children: const [
-            Homepage(),
-            SerchPage(),
-            AddPostPage(),
-            Notifiypage(),
-            ProfilePage(),
+          children: [
+            const Homepage(),
+            const SerchPage(),
+            const AddPostPage(),
+            const Notifiypage(),
+            ProfilePage(
+              username: user.username,
+              bio: user.bio,
+              profilePic: user.proPic,
+              isUser: true,
+              userId: user.user,
+              follow: user.followres.length,
+              following: user.following.length,
+            ),
           ],
+          //bottom app bar
         ),
         bottomNavigationBar: CupertinoTabBar(
           backgroundColor: mobileSearchColor,

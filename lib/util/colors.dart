@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
+const mobileBackgroundColor = Color(0xff0C0A09);
 const textboxfillcolor = Color(0xff404040);
 const mobileSearchColor = Color(0xff171717);
 const ternerycolor = Color(0xff0EA5E9);

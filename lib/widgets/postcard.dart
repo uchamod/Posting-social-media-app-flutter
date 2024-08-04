@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/pages/commentpage.dart';
+import 'package:instagram_clone/pages/profilepage.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/service/firestore.dart';
 import 'package:instagram_clone/util/colors.dart';
@@ -68,11 +69,27 @@ class _PostcardState extends State<Postcard> {
             children: [
               const Padding(padding: EdgeInsets.only(left: 13)),
               //profile image
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                  widget.snap["profUrl"].toString(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfilePage(
+                            username:  widget.snap["username"],
+                            bio:  widget.snap["bio"],
+                            profilePic:  widget.snap["proUrl"],
+                            follow:  widget.snap["username"],
+                            following:  widget.snap["username"],
+                            isUser: false,
+                            userId: widget.snap["username"]),
+                      ));
+                },
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    widget.snap["profUrl"].toString(),
+                  ),
+                  radius: 20,
                 ),
-                radius: 20,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
