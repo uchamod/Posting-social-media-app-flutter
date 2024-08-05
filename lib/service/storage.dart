@@ -10,8 +10,8 @@ class StorageServices {
   //upload file to storage
   Future<String> uploadImagesToStorage(
       String folderName, Uint8List file, bool isPost) async {
-    if (file.isNotEmpty) {
-      //get the path
+    //get the path
+    try {
       Reference reference =
           _storage.ref().child(folderName).child(_auth.currentUser!.uid);
 
@@ -25,7 +25,10 @@ class StorageServices {
       TaskSnapshot snapshot = await uploadTask;
       //get url of stored image and return
       String imageUrl = await snapshot.ref.getDownloadURL();
+      print("upload imge");
       return imageUrl;
+    } catch (err) {
+      print(err.toString());
     }
     return "";
   }

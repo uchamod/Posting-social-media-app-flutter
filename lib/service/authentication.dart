@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/responsive/mobilescreenLayout.dart';
 import 'package:instagram_clone/responsive/responsiveLauout.dart';
 import 'package:instagram_clone/responsive/webscreenLayout.dart';
+import 'package:instagram_clone/service/storage.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
 
@@ -40,16 +43,19 @@ class Authentication {
       required String password,
       required String username,
       required String bio,
-      String proPic = "",
+      required Uint8List? proPic,
       required BuildContext context}) async {
     try {
       //create a new user
       if (email.isNotEmpty &&
           password.isNotEmpty &&
           username.isNotEmpty &&
-          bio.isNotEmpty) {
+          bio.isNotEmpty &&
+          proPic != null) {
         UserCredential userCredential = await _auth
             .createUserWithEmailAndPassword(email: email, password: password);
+        String url = await StorageServices()
+            .uploadImagesToStorage("profile pics", proPic, false);
         //get created user id
         final user = userCredential.user!.uid;
         UserModel newUser = UserModel(
@@ -58,7 +64,7 @@ class Authentication {
             email: email,
             password: password,
             bio: bio,
-            proPic: proPic,
+            proPic: url,
             followres: [],
             following: []);
         //store user data
@@ -115,7 +121,10 @@ class Authentication {
       massage(err.toString(), context);
     }
   }
+ //SING OUT USER
+  Future<void> singOut() async {
+    await _auth.signOut();
+  }
 }
 
-        //  String url = await _storageServices.uploadImagesToStorage(
-        //       "profile pics", imgfile, false);
+       

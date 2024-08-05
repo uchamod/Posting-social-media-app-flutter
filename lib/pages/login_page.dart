@@ -39,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       isLoadding = !isLoadding;
     });
+    _emailController.clear();
+    _passwordController.clear();
   }
 
   //navigator
@@ -99,7 +101,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   //login button
                   InkWell(
-                    onTap: SingInUserAndToggleHome,
+                    onTap: () {
+                      SingInUserAndToggleHome();
+                      // _emailController.clear();
+                      // _passwordController.clear();
+                    },
                     child: Container(
                       width: double.infinity,
                       height: MediaQuery.of(context).size.width * 0.13,

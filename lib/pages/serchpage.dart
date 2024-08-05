@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:instagram_clone/pages/profilepage.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
 
@@ -60,9 +61,21 @@ class _SerchPageState extends State<SerchPage> {
                   itemCount: snapshot.requireData.size,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          snapshot.requireData.docs[index]["avatar"],
+                      leading: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfilePage(
+                                  userId: snapshot.requireData.docs[index]
+                                      ["uid"]),
+                            ),
+                          );
+                        },
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            snapshot.requireData.docs[index]["avatar"],
+                          ),
                         ),
                       ),
                       title: Text(

@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/pages/login_page.dart';
 import 'package:instagram_clone/service/authentication.dart';
 import 'package:instagram_clone/service/media.dart';
-import 'package:instagram_clone/service/storage.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
 import 'package:instagram_clone/util/variabals.dart';
@@ -50,17 +49,40 @@ class _SingUpPageState extends State<SingUpPage> {
     setState(() {
       isLoading = !isLoading;
     });
-    String url = await StorageServices()
-        .uploadImagesToStorage("profile pics", _image!, false);
-    //print("waiting");
+    
+
+    //checking
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: textboxfillcolor,
+        content: Text(
+          "waiting",
+          style: body,
+        ),
+      ),
+    );
+    print("waiting");
+    //
     await _authServises.singUpUser(
         email: _emailController.text,
         password: _passwordController.text,
         username: _usernameController.text,
         bio: _bioController.text,
-        proPic: url,
+        proPic: _image,
         context: context);
-    // print("done");
+    //checking
+    ScaffoldMessenger.of(context).showSnackBar(
+      //checking
+      SnackBar(
+        backgroundColor: textboxfillcolor,
+        content: Text(
+          "done",
+          style: body,
+        ),
+      ),
+    );
+    print("done");
+    //
     setState(() {
       isLoading = !isLoading;
     });
@@ -68,6 +90,7 @@ class _SingUpPageState extends State<SingUpPage> {
     _bioController.clear();
     _usernameController.clear();
     _passwordController.clear();
+    _image = null;
   }
 
   //navigator

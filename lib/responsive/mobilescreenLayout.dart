@@ -60,13 +60,7 @@ class _MobileScreenlayoutState extends State<MobileScreenlayout> {
             const AddPostPage(),
             const Notifiypage(),
             ProfilePage(
-              username: user.username,
-              bio: user.bio,
-              profilePic: user.proPic,
-              isUser: true,
               userId: user.user,
-              follow: user.followres.length,
-              following: user.following.length,
             ),
           ],
           //bottom app bar
