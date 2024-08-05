@@ -52,16 +52,16 @@ class _SingUpPageState extends State<SingUpPage> {
     
 
     //checking
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: textboxfillcolor,
-        content: Text(
-          "waiting",
-          style: body,
-        ),
-      ),
-    );
-    print("waiting");
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     backgroundColor: textboxfillcolor,
+    //     content: Text(
+    //       "waiting",
+    //       style: body,
+    //     ),
+    //   ),
+    // );
+    // print("waiting");
     //
     await _authServises.singUpUser(
         email: _emailController.text,
@@ -71,18 +71,18 @@ class _SingUpPageState extends State<SingUpPage> {
         proPic: _image,
         context: context);
     //checking
-    ScaffoldMessenger.of(context).showSnackBar(
-      //checking
-      SnackBar(
-        backgroundColor: textboxfillcolor,
-        content: Text(
-          "done",
-          style: body,
-        ),
-      ),
-    );
-    print("done");
-    //
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   //checking
+    //   SnackBar(
+    //     backgroundColor: textboxfillcolor,
+    //     content: Text(
+    //       "done",
+    //       style: body,
+    //     ),
+    //   ),
+    // );
+    // print("done");
+    // //
     setState(() {
       isLoading = !isLoading;
     });

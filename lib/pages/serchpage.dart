@@ -88,44 +88,46 @@ class _SerchPageState extends State<SerchPage> {
               },
             )
           //get all posts
-          : StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection("posts")
-                  .orderBy("date")
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: Text(
-                      "No Post Yet.",
-                      style: hinttext,
-                    ),
-                  );
-                }
-                //show all posts
-                return MasonryGridView.count(
-                  crossAxisCount: 3,
-                  itemCount: (snapshot.data! as dynamic).docs.length,
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: 0,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.only(top: 3, left: 3, right: 3),
-                      color: mobileBackgroundColor,
-                      child: Image.network(
-                        (snapshot.data! as dynamic).docs[index]["posturl"],
+          : Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("posts")
+                    .orderBy("date")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: Text(
+                        "No Post Yet.",
+                        style: hinttext,
                       ),
                     );
-                  },
-                );
-              },
+                  }
+                  //show all posts
+                  return SingleChildScrollView(
+                    child: MasonryGridView.count(
+                      scrollDirection: Axis.vertical,
+                      crossAxisCount: 3,
+                      itemCount: (snapshot.data! as dynamic).docs.length,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Image.network(
+                          (snapshot.data! as dynamic).docs[index]["posturl"],
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
     );
   }
