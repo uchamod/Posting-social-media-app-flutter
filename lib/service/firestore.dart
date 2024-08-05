@@ -114,4 +114,53 @@ class FireStoreMethods {
       print(err.toString());
     }
   }
+
+  //follow or unfollow user
+  Future<void> followUser(
+      String userId, String foreignId, BuildContext context) async {
+    try {
+      //get current user doc
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .get();
+      //get current user following list
+      List followings = (snapshot.data() as dynamic)["following"];
+      if (followings.contains(foreignId)) {
+        //unfollow from current user
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(userId)
+            .update({
+          "following": FieldValue.arrayRemove([foreignId])
+        });
+        //unfollow from forieng user
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(foreignId)
+            .update({
+          "followers": FieldValue.arrayRemove([userId])
+        });
+      } else {
+        //follow foreign user
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(userId)
+            .update({
+          "following": FieldValue.arrayUnion([foreignId])
+        });
+        //update foreign user followers list
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(foreignId)
+            .update({
+          "followers": FieldValue.arrayUnion([userId])
+        });
+      }
+    } catch (err) {
+      if (context.mounted) {
+        massage(err.toString(), context);
+      }
+    }
+  }
 }

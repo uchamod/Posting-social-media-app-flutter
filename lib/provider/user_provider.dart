@@ -3,9 +3,17 @@ import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/service/authentication.dart';
 
 class UserProvider extends ChangeNotifier {
-  UserModel? _currentUser;
+  UserModel _currentUser = UserModel(
+      user: "",
+      username: "",
+      email: "",
+      password: "",
+      bio: "",
+      proPic: "",
+      followres: [],
+      following: []);
   final Authentication _auth = Authentication();
-  UserModel get getCurrentUser => _currentUser!;
+  UserModel get getCurrentUser => _currentUser;
 
 // UserProvider() {
 //   refreshUser();

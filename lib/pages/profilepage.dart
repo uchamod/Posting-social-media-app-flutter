@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:instagram_clone/models/user_model.dart';
+import 'package:instagram_clone/pages/edit_profile.dart';
 import 'package:instagram_clone/provider/user_provider.dart';
 import 'package:instagram_clone/service/authentication.dart';
+import 'package:instagram_clone/service/firestore.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
 import 'package:provider/provider.dart';
@@ -21,9 +24,10 @@ class _ProfilePageState extends State<ProfilePage> {
   var userDetails = {};
   var postDetails;
   int postCount = 0;
-  int followCount = 0;
+  int followersCount = 0;
   int followingCount = 0;
   bool isLoading = false;
+  bool isfollowing = false;
   @override
   void initState() {
     getUserData();
@@ -48,7 +52,15 @@ class _ProfilePageState extends State<ProfilePage> {
       postDetails = postSnap;
       postCount = postSnap.docs.length;
       followingCount = userSnap.data()!["following"].length;
-      followCount = userSnap.data()!["followers"].length;
+      followersCount = userSnap.data()!["followers"].length;
+      //check user currently follow or not
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection("users").doc(uid).get();
+      List followings = (snapshot.data() as dynamic)["following"];
+      if (followings.contains(widget.userId)) {
+        isfollowing = true;
+      }
       setState(() {});
     } catch (err) {
       print(err.toString());
@@ -56,6 +68,21 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  //follow user
+  void followNewUser() async {
+    await FireStoreMethods().followUser(
+        FirebaseAuth.instance.currentUser!.uid, widget.userId, context);
+  }
+
+  //void edit profile
+  void editProfile() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const EditProfilePage(),
+        ));
   }
 
   @override
@@ -137,23 +164,29 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const Padding(padding: EdgeInsets.only(bottom: 8)),
                           //edit/follow button
-                          GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.55,
-                              padding: const EdgeInsets.symmetric(vertical: 7),
-                              decoration:
-                                  const BoxDecoration(color: ternerycolor),
-                              child: Center(
-                                child: Text(
-                                  userDetails["uid"] == currentUser.user
-                                      ? "Edit Profile"
-                                      : "Follow",
-                                  style: title,
-                                ),
-                              ),
-                            ),
-                          )
+                          userDetails["uid"] == currentUser.user
+                              ? GestureDetector(
+                                  onTap: editProfile,
+                                  child: reusableButton("Edit Profile"))
+                              : isfollowing
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        followNewUser();
+                                        setState(() {
+                                          isfollowing = false;
+                                          followersCount--;
+                                        });
+                                      },
+                                      child: reusableButton("UnFollow"))
+                                  : GestureDetector(
+                                      onTap: () {
+                                        followNewUser();
+                                        setState(() {
+                                          isfollowing = true;
+                                          followersCount++;
+                                        });
+                                      },
+                                      child: reusableButton("Follow")),
                         ],
                       )
                     ],
@@ -166,8 +199,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       statusCol("posts", postCount),
-                      statusCol("following", followCount),
-                      statusCol("followers", followingCount),
+                      statusCol("following", followingCount),
+                      statusCol("followers", followersCount),
                     ],
                   ),
                   const SizedBox(
@@ -182,20 +215,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     builder: (context, snapshot) {
                       return MasonryGridView.count(
                         crossAxisCount: 3,
-                        itemCount: (snapshot.data! as dynamic).docs.length,
-                        crossAxisSpacing: 0,
-                        mainAxisSpacing: 0,
+                        itemCount: (snapshot.data as dynamic).docs.length,
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return Container(
-                            padding: const EdgeInsets.only(
-                                top: 3, left: 3, right: 3),
-                            color: mobileBackgroundColor,
-                            child: Image.network(
-                              (snapshot.data! as dynamic).docs[index]
-                                  ["posturl"],
-                            ),
+                          return Image.network(
+                            (snapshot.data as dynamic).docs[index]["posturl"],
                           );
                         },
                       );
@@ -221,6 +248,21 @@ class _ProfilePageState extends State<ProfilePage> {
           style: body,
         ),
       ],
+    );
+  }
+
+  //reusable button
+  Widget reusableButton(String text) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.55,
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      decoration: const BoxDecoration(color: ternerycolor),
+      child: Center(
+        child: Text(
+          text,
+          style: title,
+        ),
+      ),
     );
   }
 }
