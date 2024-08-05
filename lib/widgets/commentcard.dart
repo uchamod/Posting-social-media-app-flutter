@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/pages/profilepage.dart';
 import 'package:instagram_clone/util/colors.dart';
 import 'package:instagram_clone/util/text_styles.dart';
 
@@ -20,9 +21,20 @@ class Commentcard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   //profile pic
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(snap["profUrl"]),
-                    radius: 20,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ProfilePage(userId: snap["uid"]),
+                        ),
+                      );
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(snap["profUrl"]),
+                      radius: 20,
+                    ),
                   ),
                   //coment container
                   Container(

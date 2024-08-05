@@ -74,14 +74,8 @@ class _PostcardState extends State<Postcard> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProfilePage(
-                            username:  widget.snap["username"],
-                            bio:  widget.snap["bio"],
-                            profilePic:  widget.snap["proUrl"],
-                            follow:  widget.snap["username"],
-                            following:  widget.snap["username"],
-                            isUser: false,
-                            userId: widget.snap["username"]),
+                        builder: (context) =>
+                            ProfilePage(userId: widget.snap["uid"]),
                       ));
                 },
                 child: CircleAvatar(
