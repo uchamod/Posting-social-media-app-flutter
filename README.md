@@ -61,7 +61,7 @@ Special thanks to:
 ---
 
 ### 📱 Screenshots
-[Add your app screenshots here]
+<img src="screenshots/Screenshot_2024-10-26-15-59-07-759_com.example.instagram_clone.jpg" width="400" alt="Screenshot description">
 
 ### 🤝 Contributing
 Contributions are always welcome! Please read the contribution guidelines first.
