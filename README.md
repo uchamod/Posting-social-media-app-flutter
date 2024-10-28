@@ -62,6 +62,11 @@ Special thanks to:
 
 ### 📱 Screenshots
 <img src="screenshots/Screenshot_2024-10-26-15-59-07-759_com.example.instagram_clone.jpg" width="400" alt="Screenshot description">
+<img src="screenshots/Screenshot_2024-10-26-15-59-47-350_com.example.instagram_clone.jpg" width="400" alt="Screenshot description">
+<img src="screenshots/Screenshot_2024-10-26-16-00-20-294_com.example.instagram_clone.jpg" width="400" alt="Screenshot description">
+<img src="screenshots/Screenshot_2024-10-26-16-00-57-841_com.example.instagram_clone.jpg" width="400" alt="Screenshot description">
+<img src="screenshots/Screenshot_2024-10-26-16-16-44-873_com.example.instagram_clone.jpg" width="400" alt="Screenshot description">
+<img src="screenshots/Screenshot_2024-10-26-16-16-54-983_com.example.instagram_clone.jpg" width="400" alt="Screenshot description">
 
 ### 🤝 Contributing
 Contributions are always welcome! Please read the contribution guidelines first.
